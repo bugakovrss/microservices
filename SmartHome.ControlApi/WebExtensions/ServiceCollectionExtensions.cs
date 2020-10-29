@@ -32,6 +32,7 @@ namespace SmartHome.ControlApi.WebExtensions
                 {
                     string basePath = AppContext.BaseDirectory;
                     options.IncludeXmlComments(Path.Combine(basePath, "SmartHome.ControlApi.xml"));
+                    options.IncludeXmlComments(Path.Combine(basePath, "SmartHome.Model.xml"));
                 }
             );
 

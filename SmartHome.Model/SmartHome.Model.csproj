@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(MSBuildThisFileName).xml</DocumentationFile>
+    <ExcludeXmlAssemblyFiles>false</ExcludeXmlAssemblyFiles>
   </PropertyGroup>
 
 </Project>

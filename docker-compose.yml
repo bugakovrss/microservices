@@ -1,0 +1,12 @@
+version: '3.6'
+
+services:
+  smarthome-controlapi:
+    image: youruser/smarthome-controlapi:1.0.1
+    build:
+      context: .
+      dockerfile: SmartHome.ControlApi/Dockerfile
+    environment:
+      - ASPNETCORE_URLS=http://+:8080
+    ports:
+     - "8080:8080"   
