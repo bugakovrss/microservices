@@ -12,6 +12,19 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
      - "8080:8080"   
+
+  smarthome-eventlogapi:
+    container_name: smarthome-eventlogapi
+    image: youruser/smarthome-eventlogapi:1.0.1
+    build:
+      context: .
+      dockerfile: SmartHome.EventlogApi/Dockerfile
+    environment:
+      - ASPNETCORE_URLS=http://+:8090
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+     - "8090:8090"   
+
   consul-discovery:
     container_name: consul-discovery
     image: consul
