@@ -8,12 +8,13 @@ using SmartHome.ControlApi.WebExtensions;
 using SmartHome.Model;
 using SmartHome.Model.Entities;
 using SmartHome.Model.Initializers;
+using Steeltoe.Discovery.Client;
 
 namespace SmartHome.ControlApi
 {
     public class Startup
     {
-        private const string ApplicationName = "smart-home-control-api";
+        private const string ApplicationName = "smarthome-controlapi-app";
 
         public Startup(IConfiguration configuration)
         {
@@ -25,6 +26,8 @@ namespace SmartHome.ControlApi
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDiscoveryClient(Configuration);
+
             services.AddMvcCore().AddResponseFormatters();
 
             services.AddSwaggerEx(ApplicationName);
@@ -37,6 +40,7 @@ namespace SmartHome.ControlApi
         {
             app.UseMiddleware<ErrorHandlingMiddleware>();
 
+            app.UseDiscoveryClient();
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
