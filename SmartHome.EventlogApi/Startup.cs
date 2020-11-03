@@ -32,7 +32,8 @@ namespace SmartHome.EventlogApi
 
             services.AddSwaggerEx(ApplicationName);
 
-            services.AddSingleton<IRepository<Device>>(ioc => new Repository<Device>(DeviceInitializer.Initialize()));
+            services.AddSingleton<IRepository<DeviceEvent>>(ioc => new Repository<DeviceEvent>(
+                DeviceEventInitializer.Initialize()));
         }
 
 

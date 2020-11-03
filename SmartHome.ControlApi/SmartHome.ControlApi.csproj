@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SmartHome.Model\SmartHome.Model.csproj" />
+    <ProjectReference Include="..\SmartHome.Net\SmartHome.Net.csproj" />
   </ItemGroup>
 
 

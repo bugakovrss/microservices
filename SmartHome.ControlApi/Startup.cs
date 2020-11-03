@@ -1,13 +1,17 @@
+using System.Net.Http;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SmartHome.ControlApi.Configuration;
 using SmartHome.ControlApi.ErrorHandling;
+using SmartHome.ControlApi.Services;
 using SmartHome.ControlApi.WebExtensions;
 using SmartHome.Model;
 using SmartHome.Model.Entities;
 using SmartHome.Model.Initializers;
+using Steeltoe.Common.Http.Discovery;
 using Steeltoe.Discovery.Client;
 
 namespace SmartHome.ControlApi
@@ -32,7 +36,17 @@ namespace SmartHome.ControlApi
 
             services.AddSwaggerEx(ApplicationName);
 
-            services.AddSingleton<IRepository<Device>>(ioc => new Repository<Device>(DeviceInitializer.Initialize()));
+            services.AddSingleton<IRepository<Device>>(ioc => new Repository<Device>(
+                DeviceInitializer.Initialize()));
+
+            services.Configure<EventlogApiEndpoints>(Configuration.GetSection("EventlogApi"));
+
+            services.AddScoped<IEventlogService, EventlogService>();
+
+            // Configure HttpClient
+            services.AddHttpClient<HttpClient>("eventlogs")
+                .AddServiceDiscovery()
+                .AddTypedClient<IEventlogService, EventlogService>();
         }
 
 

@@ -5,6 +5,7 @@ FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
 COPY ["SmartHome.EventlogApi/SmartHome.EventlogApi.csproj", "SmartHome.EventlogApi/"]
 COPY ["SmartHome.Model/SmartHome.Model.csproj", "SmartHome.Model/"]
+COPY ["SmartHome.Net/SmartHome.Net.csproj", "SmartHome.Net/"]
 RUN dotnet restore "SmartHome.EventlogApi/SmartHome.EventlogApi.csproj"
 COPY . .
 WORKDIR "/src/SmartHome.EventlogApi"
