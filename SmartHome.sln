@@ -11,7 +11,11 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartHome.EventlogApi", "SmartHome.EventlogApi\SmartHome.EventlogApi.csproj", "{664465A0-458E-4C4D-BF8D-CC3958765CB2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartHome.Net", "SmartHome.Net\SmartHome.Net.csproj", "{3299394B-A103-45D6-9242-DD47F0402126}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartHome.Net", "SmartHome.Net\SmartHome.Net.csproj", "{3299394B-A103-45D6-9242-DD47F0402126}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartHome.IdentityServer", "SmartHome.IdentityServer\SmartHome.IdentityServer.csproj", "{0BCEEC9B-F050-4694-87D4-A11FEC0083D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartHome.IdentityClient", "SmartHome.IdentityClient\SmartHome.IdentityClient.csproj", "{8C3BAA78-6F9F-4DDA-818B-A5958F95A5A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +43,14 @@ Global
 		{3299394B-A103-45D6-9242-DD47F0402126}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3299394B-A103-45D6-9242-DD47F0402126}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3299394B-A103-45D6-9242-DD47F0402126}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BCEEC9B-F050-4694-87D4-A11FEC0083D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BCEEC9B-F050-4694-87D4-A11FEC0083D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BCEEC9B-F050-4694-87D4-A11FEC0083D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BCEEC9B-F050-4694-87D4-A11FEC0083D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C3BAA78-6F9F-4DDA-818B-A5958F95A5A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C3BAA78-6F9F-4DDA-818B-A5958F95A5A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C3BAA78-6F9F-4DDA-818B-A5958F95A5A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C3BAA78-6F9F-4DDA-818B-A5958F95A5A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

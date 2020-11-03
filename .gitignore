@@ -408,3 +408,4 @@ obj/Debug/
 *.xsd.cs
 *.btm.cs
 
+/SmartHome.IdentityServer/tempkey.jwk
