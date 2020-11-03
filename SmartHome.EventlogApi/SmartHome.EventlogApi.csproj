@@ -4,8 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(MSBuildThisFileName).xml</DocumentationFile>
     <ExcludeXmlAssemblyFiles>false</ExcludeXmlAssemblyFiles>
+    <UserSecretsId>b370c45d-e818-4369-adb5-7c7aaa2d7109</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,7 +19,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SmartHome.Model\SmartHome.Model.csproj" />
-    <ProjectReference Include="..\SmartHome.Net\SmartHome.Net.csproj" />
   </ItemGroup>
 
 

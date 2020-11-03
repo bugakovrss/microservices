@@ -2,12 +2,12 @@
 
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS base
 WORKDIR /app
-EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
 COPY ["SmartHome.ControlApi/SmartHome.ControlApi.csproj", "SmartHome.ControlApi/"]
 COPY ["SmartHome.Model/SmartHome.Model.csproj", "SmartHome.Model/"]
+COPY ["SmartHome.Net/SmartHome.Net.csproj", "SmartHome.Net/"]
 RUN dotnet restore "SmartHome.ControlApi/SmartHome.ControlApi.csproj"
 COPY . .
 WORKDIR "/src/SmartHome.ControlApi"

@@ -1,18 +1,14 @@
 {
   "$schema": "http://json.schemastore.org/launchsettings.json",
   "profiles": {
-    "SmartHome.ControlApi": {
+    "SmartHome.EventlogApi": {
       "commandName": "Project",
+      "launchBrowser": false,
       "launchUrl": "swagger/index.html",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:8080"
-    },
-    "Docker": {
-      "commandName": "Docker",
-      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger/index.html",
-      "publishAllPorts": true
+      "applicationUrl": "http://localhost:8090"
     }
   }
 }

@@ -1,4 +1,5 @@
-﻿using SmartHome.Model.Entities;
+﻿using SmartHome.ControlApi.Services.Model;
+using SmartHome.Model.Entities;
 
 namespace SmartHome.ControlApi.Contracts
 {
@@ -29,6 +30,18 @@ namespace SmartHome.ControlApi.Contracts
                 Name = device.Name,
                 State = device.State,
                 Description = device.Description
+            };
+        }
+
+        public static DeviceEventModel Map(DeviceEventData deviceEvent)
+        {
+            return new DeviceEventModel
+            {
+                Id = deviceEvent.Id,
+                DeviceId = deviceEvent.DeviceId,
+                Time = deviceEvent.Time,
+                Type = deviceEvent.Type,
+                Message = deviceEvent.Message
             };
         }
     }

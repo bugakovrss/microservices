@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
@@ -6,9 +7,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SmartHome.ControlApi.Contracts;
 using SmartHome.ControlApi.ErrorHandling;
+using SmartHome.ControlApi.Services;
+using SmartHome.ControlApi.Services.Model;
 using SmartHome.Model;
 using SmartHome.Model.Entities;
 using SmartHome.Model.Errors;
+using SmartHome.Model.Helpers;
 
 namespace SmartHome.ControlApi.Controllers
 {
@@ -21,14 +25,17 @@ namespace SmartHome.ControlApi.Controllers
     public class DevicesController : ControllerBase
     {
         private readonly IRepository<Device> _deviceRepository;
+        private readonly IEventlogService _eventLogService;
 
         /// <summary>
         /// Конструктор
         /// </summary>
         /// <param name="deviceRepository"></param>
-        public DevicesController(IRepository<Device> deviceRepository)
+        /// <param name="eventLogService"></param>
+        public DevicesController(IRepository<Device> deviceRepository, IEventlogService eventLogService)
         {
             _deviceRepository = deviceRepository;
+            _eventLogService = eventLogService;
         }
 
         /// <summary>
@@ -56,6 +63,33 @@ namespace SmartHome.ControlApi.Controllers
         {
             var device = await _deviceRepository.GetAsync(deviceId);
             return Mapper.Map(device);
+        }
+
+        /// <summary>
+        /// Получить лог событий
+        /// </summary>
+        /// <param name="deviceId">Идентификатор устройства</param>
+        /// <returns></returns>
+        [HttpGet("{deviceId}/Events")]
+        [ProducesResponseType(typeof(DeviceEventsResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ErrorModel), (int)HttpStatusCode.BadRequest)]
+        public async Task<DeviceEventsResponse> GetDeviceEvents([Required][FromRoute] long deviceId)
+        {
+            var device = await _deviceRepository.GetAsync(deviceId);
+
+            if(device == null)
+                throw new ControlApiException("Устройство не найдено", ErrorCode.NotFound);
+
+
+            var events = await _eventLogService.GetEvents(deviceId, HttpContext.RequestAborted);
+
+            return new DeviceEventsResponse
+            {
+                Id = deviceId,
+                State = device.State,
+                Name = device.Name,
+                Events = events?.Select(Mapper.Map).ToList()
+            };
         }
 
         /// <summary>
@@ -112,6 +146,14 @@ namespace SmartHome.ControlApi.Controllers
 
             await _deviceRepository.UpdateAsync(device);
 
+            await _eventLogService.AddEvent(new DeviceEventData
+            {
+                DeviceId = deviceId,
+                Message = MessageHelper.GetMesssage(EventType.TurnedOn),
+                Type = EventType.TurnedOn,
+                Time = DateTime.Now
+            },  HttpContext.RequestAborted);
+
             return new StatusResponse { Status = "Ok" };
         }
 
@@ -137,6 +179,14 @@ namespace SmartHome.ControlApi.Controllers
             device.State = DeviceState.Off;
 
             await _deviceRepository.UpdateAsync(device);
+
+            await _eventLogService.AddEvent(new DeviceEventData
+            {
+                DeviceId = deviceId,
+                Message = MessageHelper.GetMesssage(EventType.TurnedOff),
+                Type = EventType.TurnedOff,
+                Time = DateTime.Now
+            }, HttpContext.RequestAborted);
 
             return new StatusResponse { Status = "Ok" };
         }
