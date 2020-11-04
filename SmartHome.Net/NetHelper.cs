@@ -17,6 +17,19 @@ namespace SmartHome.Net
             return await builder.SendAsync(token);
         }
 
+        public static async Task<HttpResponseMessage> GetAsync(HttpClient client,
+            string url,
+			string bearerToken,
+            CancellationToken token = default)
+        {
+            var builder = new RequestBuilder(client)
+                .AddMethod(HttpMethod.Get)
+                .AddBearerToken(bearerToken)
+                .AddUrl(url);
+
+            return await builder.SendAsync(token);
+        }
+
 
 		public static async Task<HttpResponseMessage> PostAsync(HttpClient client,
 			string url, object value = null,
@@ -34,6 +47,25 @@ namespace SmartHome.Net
 			return await builder.SendAsync(token);
 		}
 
+
+        public static async Task<HttpResponseMessage> PostAsync(HttpClient client,
+            string url,
+            string bearerToken,
+            object value = null,
+            CancellationToken token = default)
+        {
+            var builder = new RequestBuilder(client)
+                .AddMethod(HttpMethod.Post)
+                .AddBearerToken(bearerToken)
+                .AddUrl(url);
+
+            if (value != null)
+            {
+                builder.AddContent(new JsonContent(value ?? new { }));
+            }
+
+            return await builder.SendAsync(token);
+        }
 
 		public static async Task<HttpResponseMessage> PutAsync(
 			HttpClient client,

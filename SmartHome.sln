@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartHome.Net", "SmartHome.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartHome.IdentityServer", "SmartHome.IdentityServer\SmartHome.IdentityServer.csproj", "{0BCEEC9B-F050-4694-87D4-A11FEC0083D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartHome.IdentityClient", "SmartHome.IdentityClient\SmartHome.IdentityClient.csproj", "{8C3BAA78-6F9F-4DDA-818B-A5958F95A5A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartHome.IdentityClient", "SmartHome.IdentityClient\SmartHome.IdentityClient.csproj", "{8C3BAA78-6F9F-4DDA-818B-A5958F95A5A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartHome.AuthApi", "Smarthome.AuthApi\SmartHome.AuthApi.csproj", "{B6FF8E9A-22BF-4A02-AA5A-8E7A15986914}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{8C3BAA78-6F9F-4DDA-818B-A5958F95A5A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C3BAA78-6F9F-4DDA-818B-A5958F95A5A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C3BAA78-6F9F-4DDA-818B-A5958F95A5A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6FF8E9A-22BF-4A02-AA5A-8E7A15986914}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6FF8E9A-22BF-4A02-AA5A-8E7A15986914}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6FF8E9A-22BF-4A02-AA5A-8E7A15986914}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6FF8E9A-22BF-4A02-AA5A-8E7A15986914}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -5,6 +5,8 @@
         NotFound,
         WrongRequest,
         WrongOperation,
-        UnspecifiedError
+        UnspecifiedError,
+        Unauthorized,
+        RemoteServiceError
     }
 }

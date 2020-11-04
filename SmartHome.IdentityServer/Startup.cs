@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SmartHome.IdentityServer.Configurations;
+using Steeltoe.Discovery.Client;
 
 namespace SmartHome.IdentityServer
 {
@@ -18,9 +19,13 @@ namespace SmartHome.IdentityServer
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddIdentityServer()
+            services.AddDiscoveryClient(Configuration);
+
+            services.AddIdentityServer( )
                 .AddInMemoryApiScopes(Config.ApiScopes)
                 .AddInMemoryClients(Config.Clients)
+                .AddInMemoryApiResources(Config.ApiResources)
+                .AddTestUsers(TestUsers.Users)
                 .AddDeveloperSigningCredential();
         }
 
@@ -31,6 +36,8 @@ namespace SmartHome.IdentityServer
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseDiscoveryClient();
 
             app.UseIdentityServer();
         }
