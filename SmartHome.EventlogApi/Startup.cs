@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using SmartHome.EventlogApi.Configuration;
 using SmartHome.EventlogApi.ErrorHandling;
 using SmartHome.EventlogApi.WebExtensions;
 using SmartHome.Model;
@@ -30,10 +31,13 @@ namespace SmartHome.EventlogApi
 
             services.AddMvcCore().AddResponseFormatters();
 
+            var identityServerSettings = new IdentityServerSettings();
+            Configuration.Bind("IdentityServer", identityServerSettings);
+
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {
-                    options.Authority = "http://smarthome-identity:8095";
+                    options.Authority = identityServerSettings.Host;
 
                     options.TokenValidationParameters = new TokenValidationParameters
                     {

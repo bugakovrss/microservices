@@ -37,10 +37,13 @@ namespace SmartHome.ControlApi
 
             services.AddHttpContextAccessor();
 
+            var identityServerSettings = new IdentityServerSettings();
+            Configuration.Bind("IdentityServer", identityServerSettings);
+
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {
-                    options.Authority = "http://smarthome-identity:8095";
+                    options.Authority = identityServerSettings.Host;
 
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
