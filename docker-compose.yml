@@ -25,6 +25,30 @@ services:
     ports:
      - "8090:8090"   
 
+  smarthome-authapi:
+    container_name: smarthome-authapi
+    image: youruser/smarthome-authapi:1.0.1
+    build:
+      context: .
+      dockerfile: SmartHome.AuthApi/Dockerfile
+    environment:
+      - ASPNETCORE_URLS=http://+:8088
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+     - "8088:8088"   
+
+  smarthome-identity:
+    container_name: smarthome-identity
+    image: youruser/smarthome-identity:1.0.1
+    build:
+      context: .
+      dockerfile: SmartHome.IdentityServer/Dockerfile
+    environment:
+      - ASPNETCORE_URLS=http://+:8095
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+     - "8095:8095" 
+
   consul-discovery:
     container_name: consul-discovery
     image: consul

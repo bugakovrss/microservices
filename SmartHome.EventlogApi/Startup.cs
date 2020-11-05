@@ -1,8 +1,9 @@
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using SmartHome.EventlogApi.Configuration;
 using SmartHome.EventlogApi.ErrorHandling;
 using SmartHome.EventlogApi.WebExtensions;
 using SmartHome.Model;
@@ -30,6 +31,31 @@ namespace SmartHome.EventlogApi
 
             services.AddMvcCore().AddResponseFormatters();
 
+            var identityServerSettings = new IdentityServerSettings();
+            Configuration.Bind("IdentityServer", identityServerSettings);
+
+            services.AddAuthentication("Bearer")
+                .AddJwtBearer("Bearer", options =>
+                {
+                    options.Authority = identityServerSettings.Host;
+
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateAudience = false
+                    };
+
+                    options.RequireHttpsMetadata = false;
+                });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("ApiScope", policy =>
+                {
+                    policy.RequireAuthenticatedUser();
+                    policy.RequireClaim("scope", "eventlogapi");
+                });
+            });
+
             services.AddSwaggerEx(ApplicationName);
 
             services.AddSingleton<IRepository<DeviceEvent>>(ioc => new Repository<DeviceEvent>(
@@ -37,16 +63,20 @@ namespace SmartHome.EventlogApi
         }
 
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider versionProvider)
+        public void Configure(IApplicationBuilder app,  IApiVersionDescriptionProvider versionProvider)
         {
             app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.UseDiscoveryClient();
             app.UseRouting();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapControllers()
+                    .RequireAuthorization("ApiScope");
             });
 
             app.UseSwagger();

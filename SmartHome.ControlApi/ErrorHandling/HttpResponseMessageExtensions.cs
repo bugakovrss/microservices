@@ -9,8 +9,16 @@ namespace SmartHome.ControlApi.ErrorHandling
     {
         public static async Task<ControlApiException> ReadErrorAsync(this HttpResponseMessage message)
         {
-            var error = await message.ContentAsAsync<ErrorModel>();
-            return new ControlApiException(error.Error, error.ErrorCode);
+            try
+            {
+                var error = await message.ContentAsAsync<ErrorModel>();
+                return new ControlApiException(error.Error, error.ErrorCode);
+            }
+            catch (System.Exception)
+            {
+                string errorText = await message.ContentAsStringAsync();
+                return new ControlApiException($"Статус: {message.StatusCode} " +errorText, ErrorCode.RemoteServiceError);
+            }
         }
     }
 }

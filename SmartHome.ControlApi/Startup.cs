@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using SmartHome.ControlApi.Configuration;
 using SmartHome.ControlApi.ErrorHandling;
 using SmartHome.ControlApi.Services;
@@ -34,6 +35,33 @@ namespace SmartHome.ControlApi
 
             services.AddMvcCore().AddResponseFormatters();
 
+            services.AddHttpContextAccessor();
+
+            var identityServerSettings = new IdentityServerSettings();
+            Configuration.Bind("IdentityServer", identityServerSettings);
+
+            services.AddAuthentication("Bearer")
+                .AddJwtBearer("Bearer", options =>
+                {
+                    options.Authority = identityServerSettings.Host;
+
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateAudience = false
+                    };
+
+                    options.RequireHttpsMetadata = false;
+                });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("ApiScope", policy =>
+                {
+                    policy.RequireAuthenticatedUser();
+                    policy.RequireClaim("scope", "controlapi");
+                });
+            });
+
             services.AddSwaggerEx(ApplicationName);
 
             services.AddSingleton<IRepository<Device>>(ioc => new Repository<Device>(
@@ -57,9 +85,13 @@ namespace SmartHome.ControlApi
             app.UseDiscoveryClient();
             app.UseRouting();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapControllers()
+                    .RequireAuthorization("ApiScope");
             });
 
             app.UseSwagger();

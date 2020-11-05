@@ -80,12 +80,41 @@ namespace SmartHome.EventlogApi.WebExtensions
 
             services.AddSwaggerGen((Action<SwaggerGenOptions>)(options =>
             {
-                foreach (ApiVersionDescription versionDescription in (IEnumerable<ApiVersionDescription>)ServiceProviderServiceExtensions.GetRequiredService<IApiVersionDescriptionProvider>(ServiceCollectionContainerBuilderExtensions.BuildServiceProvider(services)).ApiVersionDescriptions)
+                foreach (ApiVersionDescription versionDescription in ServiceProviderServiceExtensions
+                    .GetRequiredService<IApiVersionDescriptionProvider>(
+                        ServiceCollectionContainerBuilderExtensions.BuildServiceProvider(services))
+                    .ApiVersionDescriptions)
+                {
                     options.SwaggerDoc(versionDescription.GroupName, new OpenApiInfo()
                     {
                         Title = applicationName,
                         Version = versionDescription.ApiVersion.ToString()
                     });
+                }
+
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme (Example: 'Bearer 12345abcdef')",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        Array.Empty<string>()
+                    }
+                });
 
                 options.UseInlineDefinitionsForEnums();
 

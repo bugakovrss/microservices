@@ -8,14 +8,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
-using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
-namespace SmartHome.ControlApi.WebExtensions
+namespace SmartHome.AuthApi.WebExtensions
 {
     public static class ServiceCollectionExtensions
     {
@@ -31,8 +31,7 @@ namespace SmartHome.ControlApi.WebExtensions
                 options =>
                 {
                     string basePath = AppContext.BaseDirectory;
-                    options.IncludeXmlComments(Path.Combine(basePath, "SmartHome.ControlApi.xml"));
-                    options.IncludeXmlComments(Path.Combine(basePath, "SmartHome.Model.xml"));
+                    options.IncludeXmlComments(Path.Combine(basePath, "SmartHome.AuthApi.xml"));
                 }
             );
 
@@ -80,36 +79,17 @@ namespace SmartHome.ControlApi.WebExtensions
 
             services.AddSwaggerGen((Action<SwaggerGenOptions>)(options =>
             {
-                foreach (ApiVersionDescription versionDescription in (IEnumerable<ApiVersionDescription>)ServiceProviderServiceExtensions.GetRequiredService<IApiVersionDescriptionProvider>(ServiceCollectionContainerBuilderExtensions.BuildServiceProvider(services)).ApiVersionDescriptions)
+                foreach (ApiVersionDescription versionDescription in ServiceProviderServiceExtensions
+                    .GetRequiredService<IApiVersionDescriptionProvider>(
+                        ServiceCollectionContainerBuilderExtensions.BuildServiceProvider(services))
+                    .ApiVersionDescriptions)
+                {
                     options.SwaggerDoc(versionDescription.GroupName, new OpenApiInfo()
                     {
                         Title = applicationName,
                         Version = versionDescription.ApiVersion.ToString()
                     });
-
-                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-                {
-                    Description = "JWT Authorization header using the Bearer scheme (Example: 'Bearer 12345abcdef')",
-                    Name = "Authorization",
-                    In = ParameterLocation.Header,
-                    Type = SecuritySchemeType.ApiKey,
-                    Scheme = "Bearer"
-                });
-
-                options.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            }
-                        },
-                        Array.Empty<string>()
-                    }
-                });
+                }
 
                 options.UseInlineDefinitionsForEnums();
 
