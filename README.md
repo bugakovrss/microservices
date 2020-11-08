@@ -15,19 +15,24 @@ This project uses the following patterns and technologies:
     ```
  - Open link "http://localhost:8500" in browser and make sure that all services is available
  - Open link "http://localhost:8088/swagger/index.html" and autenticate using credential:
-		     ```{
+ 
+		     ```
+		     {
 				"login": "admin",
 				"password": "admin",
 				"scopes": [
 				  "eventlogapi",
 				  "controlapi"
 				]
-		        }```
+		      }
+			```
  - Go to swagger smarthome-controlapi-app "http://localhost:8080/swagger/index.html" and log in using the previously received bearer token	
  
  ## Simulate network corruptions
  - Execute in console command:
+```
   	docker exec -it smarthome-eventlogapi /bin/sh
+```
  - Run in openned terminal command
     ``` 
     tc qdisc add dev eth0 root netem loss 50% 50% 
